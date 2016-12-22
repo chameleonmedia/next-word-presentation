@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Next Word Prediction</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Next Word Prediction">
+  <meta name="author" content="Gareth Cork">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Next Word Prediction</h1>
+    <h2>Implementation of the Modified Kneser Ney Algorithm</h2>
+    <p>Gareth Cork<br/>Data Science Student</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Context</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Many of us use next word prediction each day - most commonly on our mobile phones. These tools can help improve speed of typing and improve spelling accuracy. </p>
+
+<div style="width: 45%; float: left; padding-right:5%">
+
+<p>The aim of this project is to produce an application that predicts the next word, given the context of the words keyed by the user. The project utilises best practice algorithms to maximise predictive performance.</p>
+
+<p>The application is hosted within the Shiny framework and can be found <a href="http://www.google.com">here</a>.</p>
+
+<p><strong>How does the app work?</strong> The user enters text into the input area, the most probably next words are then shown to the user in descending order.</p>
+
+</div>
+
+<div style="width: 45%; float: left; padding-right:5%">
+Image
+</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Data and Processing</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.3.2
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Data</th>
+<th align="left">Size</th>
+<th align="left">Documents</th>
+<th align="left">Words</th>
+<th align="left">Vocabulary</th>
+<th align="left">% Valid English</th>
+<th align="left">% Dictionary coverage</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Twitter</td>
+<td align="left">159 MB</td>
+<td align="left">2.4m</td>
+<td align="left">29.5m</td>
+<td align="left">397k</td>
+<td align="left">82.6%</td>
+<td align="left">74.3%</td>
+</tr>
+<tr>
+<td align="left">News</td>
+<td align="left">196 MB</td>
+<td align="left">1.0m</td>
+<td align="left">33.5m</td>
+<td align="left">337k</td>
+<td align="left">86.8%</td>
+<td align="left">79.5%</td>
+</tr>
+<tr>
+<td align="left">Blogs</td>
+<td align="left">200 MB</td>
+<td align="left">0.9m</td>
+<td align="left">36.9m</td>
+<td align="left">387k</td>
+<td align="left">88.9%</td>
+<td align="left">88.5%</td>
+</tr>
+</tbody></table>
+
+<p>The data consists of 1.0m news articles, 0.9m blog articles and 2.4, tweets and covers the majority of common words in the English Language.</p>
+
+<ul>
+<li>URLs, email addresses, punctuation have not been included as they do not contribute to model quality.</li>
+<li>Stop words have not been removed as these add value to the prediction model</li>
+<li>Explicit words have been removed to prevent explicit predictions</li>
+<li>All words have been converted to lower case for consistency and to allow a smaller corpus for the same predictive ability</li>
+<li>Unknown words will not be an output of the prediction model however these will be included for performance evaluation</li>
+<li>A dictionary has been utilised to reduce the size of the database required and to optimise performance on real words.</li>
+<li>9% of the data is used to build the model (a term frequency matrix) and 1% is used for testing</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Algorithm</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>In the task of wanting to predict the next word given some history, we can formulate this problem as the probability of a word \(w\) given its history \(h\) as \(P(w|h)\). The probability is calculated as the relative frequency of the word or permutation of words. \(P(w|h) = \frac{P(w, h)}{P(h)}\).</p>
+
+<p>The predictive model is based on an n-gram model. N-grams are one of the most common tools for building language models An n-gram is a sequence of \(n\) words for example &quot;Thank you&quot; is a 2-gram or bi-gram, &quot;How are you&quot; is a 3-gram or a tri-gram, and so on, these n-grams are extracted from the training data set.</p>
+
+<p>A smoothing algorithm  is used, so that words not observed in training are still given some probability mass:</p>
+
+<p><strong>Modified Kneser Ney (Chen and Goodman)</strong></p>
+
+<p>\[
+p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{max(c_{KN}(w_{i-n+1}^{i}) - D, 0)}{c_{KN}(w_{i-n+1}^{i-1})}+\lambda(w_{i-n+1}^{i-1})p_{KN}(w_i|w_{i-n+2}^{i-1})
+\]</p>
+
+<p>All calculated values are stored in a <code>data.table</code>, meaning that values are pulled in real time rather than calculated - this results in a lengthy build process but results in fast response times for the user.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Performance</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>\[
+\text{Perplexity}(w_1^n) = \exp \left( -\frac{1}{n} \sum_{i=1}^n \ln  P \left( w_i \middle| w^{i-1}_{i-n+1} \right) \right)
+\]</p>
+
+<p>Perplexity was used as the main metric for evaluation, it represents the average branching factor - the average number of words that can follow a given word. Perplexity is calculated on a held out test set,</p>
+
+<table><thead>
+<tr>
+<th align="left">Model</th>
+<th align="left">Perplexity - Exc. OOV</th>
+<th align="left">OOV</th>
+<th align="left">Perplexity - Inc. OOV</th>
+<th align="left">Accuracy</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">MLE - 3gram (no dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+<tr>
+<td align="left">MLE - 2gram (no dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+<tr>
+<td align="left">MLE - 1gram (no dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+<tr>
+<td align="left">MLE - 3gram (dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+<tr>
+<td align="left">MLE - 2gram (dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+<tr>
+<td align="left">MLE - 1gram (dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+<tr>
+<td align="left">Modified Kneser Ney - 3gram (no dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+<tr>
+<td align="left">Modified Kneser Ney - 3gram (dictionary)</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+<td align="left">%</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Context'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Data and Processing'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Algorithm'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Performance'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

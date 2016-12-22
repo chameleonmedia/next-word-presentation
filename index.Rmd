@@ -43,7 +43,7 @@ Image
 intro.results <- data.frame(c("Twitter", "News", "Blogs"), c("159 MB", "196 MB", "200 MB"), c("2.4m", "1.0m", "0.9m"), c("29.5m", "33.5m", "36.9m"), c("397k", "337k", "387k"), c("82.6%", "86.8%", "88.9%"), c("74.3%", "79.5%", "88.5%"))
 names(intro.results) <- c("Data", "Size", "Documents", "Words", "Vocabulary", "% Valid English", "% Dictionary coverage")
 rownames(intro.results) <- NULL
-library(knitr)
+suppressMessages(library(knitr))
 corpus.summary <- kable(intro.results)
 return(corpus.summary)
 ```
@@ -94,7 +94,6 @@ Perplexity was used as the main metric for evaluation, it represents the average
 intro.results <- data.frame(c("MLE - 3gram (no dictionary)", "MLE - 2gram (no dictionary)", "MLE - 1gram (no dictionary)", "MLE - 3gram (dictionary)", "MLE - 2gram (dictionary)", "MLE - 1gram (dictionary)", "Modified Kneser Ney - 3gram (no dictionary)", "Modified Kneser Ney - 3gram (dictionary)"), c("%", "%", "%", "%", "%", "%", "%", "%"), c("%", "%", "%", "%", "%", "%", "%", "%"), c("%", "%", "%", "%", "%", "%", "%", "%"),  c("%", "%", "%", "%", "%", "%", "%", "%"))
 names(intro.results) <- c("Model", "Perplexity - Exc. OOV", "OOV", "Perplexity - Inc. OOV", "Accuracy")
 rownames(intro.results) <- NULL
-library(knitr)
 corpus.summary <- kable(intro.results)
 return(corpus.summary)
 ```

@@ -40,12 +40,6 @@ Image
 ## Data and Processing
 
 
-```
-## Warning: package 'knitr' was built under R version 3.3.2
-```
-
-
-
 |Data    |Size   |Documents |Words |Vocabulary |% Valid English |% Dictionary coverage |
 |:-------|:------|:---------|:-----|:----------|:---------------|:---------------------|
 |Twitter |159 MB |2.4m      |29.5m |397k       |82.6%           |74.3%                 |

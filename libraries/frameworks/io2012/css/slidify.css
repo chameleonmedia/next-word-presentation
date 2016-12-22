@@ -191,7 +191,7 @@ ol {
 
 ol li {
   margin-bottom: 0.5em;
-  font-family: "Open Sans";
+  font-family: "Helvetica";
 }
 
 ol li ol {
@@ -281,7 +281,7 @@ div.modal-body pre{
 }
 
 body {
-  font-family: "Open Sans";
+  font-family: "Helvetica";
   color: #444;
 }
 
@@ -317,16 +317,16 @@ body {
   font-size: 1em;
 }
 slide.segue h2{
- font-family: "Open Sans Condensed";
+ font-family: "Helvetica";
  font-weight: 700;
 }
 slide:not(.segue)  h2{
- font-family: "Open Sans Condensed";
+ font-family: "Helvetica";
  font-weight: 700;
  color: darkslategray;
 }
 article p {
-  font-family: "Open Sans"
+  font-family: "Helvetica"
 }
 
 code {

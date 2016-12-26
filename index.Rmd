@@ -27,7 +27,7 @@ Many of us use next word prediction each day - most commonly on our mobile phone
 
 <p>The aim of this project is to produce an application that predicts the next word, given the context of the words keyed by the user. The project utilises best practice algorithms to maximise predictive performance.</p>
 
-<p>The application is hosted within the Shiny framework and can be found <a href="http://www.google.com">here</a>.</p>
+<p>The application is hosted within the Shiny framework and can be found <a href="https://garethcork.shinyapps.io/prediction-app/">here</a>.</p>
 
 <p><strong>How does the app work?</strong> The user enters text into the input area, the most probably next words are then shown to the user in descending order.</p>
 

@@ -9,6 +9,8 @@ hitheme     : tomorrow      #
 widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
+url:
+  assets: ./assets
 
 ---
 
@@ -21,7 +23,7 @@ Many of us use next word prediction each day - most commonly on our mobile phone
 
 
 
-<div style="width: 45%; float: left; padding-right:5%">
+<div style="width: 35%; float: left; padding-right:5%">
 
 <p>The aim of this project is to produce an application that predicts the next word, given the context of the words keyed by the user. The project utilises best practice algorithms to maximise predictive performance.</p>
 
@@ -31,8 +33,9 @@ Many of us use next word prediction each day - most commonly on our mobile phone
 
 </div>
 
-<div style="width: 45%; float: left; padding-right:5%">
-Image
+<div style="width: 55%; float: left; padding-right:5%">
+<p><strong>Image 1: Application</strong></p><p>
+<img src="assets/screen.jpg", style="width:100%; height:auto" /></p>
 </div>
 
 ---
@@ -48,14 +51,13 @@ Image
 
 
 
-The data consists of 1.0m news articles, 0.9m blog articles and 2.4, tweets and covers the majority of common words in the English Language.
+The data consists of 1.0m news articles, 0.9m blog articles and 2.4m, tweets and covers the majority of common words in the English Language.
 
 - URLs, email addresses, punctuation have not been included as they do not contribute to model quality.
 - Stop words have not been removed as these add value to the prediction model
 - Explicit words have been removed to prevent explicit predictions
 - All words have been converted to lower case for consistency and to allow a smaller corpus for the same predictive ability
 - Unknown words will not be an output of the prediction model however these will be included for performance evaluation
-- A dictionary has been utilised to reduce the size of the database required and to optimise performance on real words.
 - 9% of the data is used to build the model (a term frequency matrix) and 1% is used for testing
 
 ---
@@ -73,10 +75,10 @@ A smoothing algorithm  is used, so that words not observed in training are still
 
 
 $$
-p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{max(c_{KN}(w_{i-n+1}^{i}) - D, 0)}{c_{KN}(w_{i-n+1}^{i-1})}+\lambda(w_{i-n+1}^{i-1})p_{KN}(w_i|w_{i-n+2}^{i-1})
+p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{max(c_{KN}(w_{i-n+1}^{i}) - D(w_{i-n+1}^{i-1}), 0)}{c_{KN}(w_{i-n+1}^{i-1})}+\lambda(w_{i-n+1}^{i-1})p_{KN}(w_i|w_{i-n+2}^{i-1})
 $$
 
-All calculated values are stored in a `data.table`, meaning that values are pulled in real time rather than calculated - this results in a lengthy build process but results in fast response times for the user.
+All count values are stored in seperate `data.table`'s, meaning that counts are pulled in real time rather than calculated - this results in a lengthy build process but results in fast response times for the user.
 
 ---
 
@@ -86,18 +88,14 @@ $$
 \text{Perplexity}(w_1^n) = \exp \left( -\frac{1}{n} \sum_{i=1}^n \ln  P \left( w_i \middle| w^{i-1}_{i-n+1} \right) \right)
 $$
 
-Perplexity was used as the main metric for evaluation, it represents the average branching factor - the average number of words that can follow a given word. Perplexity is calculated on a held out test set,
+Perplexity was used as the main metric for evaluation, it represents the average branching factor - the average number of words that can follow a given word. Perplexity is calculated on a held out test set. 
 
 
-|Model                                       |Perplexity - Exc. OOV |OOV |Perplexity - Inc. OOV |Accuracy |
-|:-------------------------------------------|:---------------------|:---|:---------------------|:--------|
-|MLE - 3gram (no dictionary)                 |%                     |%   |%                     |%        |
-|MLE - 2gram (no dictionary)                 |%                     |%   |%                     |%        |
-|MLE - 1gram (no dictionary)                 |%                     |%   |%                     |%        |
-|MLE - 3gram (dictionary)                    |%                     |%   |%                     |%        |
-|MLE - 2gram (dictionary)                    |%                     |%   |%                     |%        |
-|MLE - 1gram (dictionary)                    |%                     |%   |%                     |%        |
-|Modified Kneser Ney - 3gram (no dictionary) |%                     |%   |%                     |%        |
-|Modified Kneser Ney - 3gram (dictionary)    |%                     |%   |%                     |%        |
+|Model                       |Perplexity - Exc. OOV |OOV |Perplexity - Inc. OOV |
+|:---------------------------|:---------------------|:---|:---------------------|
+|MLE - 3gram                 |39                    |52% |24322                 |
+|MLE - 2gram                 |140                   |19% |1112                  |
+|MLE - 1gram                 |1228                  |1%  |1371                  |
+|Modified Kneser Ney - 4gram |%                     |%   |%                     |
 
-
+ 

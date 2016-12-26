@@ -69,7 +69,7 @@ In the task of wanting to predict the next word given some history, we can formu
 
 The predictive model is based on an n-gram model. N-grams are one of the most common tools for building language models An n-gram is a sequence of $n$ words for example "Thank you" is a 2-gram or bi-gram, "How are you" is a 3-gram or a tri-gram, and so on, these n-grams are extracted from the training data set.
 
-A smoothing algorithm  is used, so that words not observed in training are still given some probability mass:
+A smoothing algorithm  is used, so that permutations of words not observed in training are still given  probability mass:
 
 <strong>Modified Kneser Ney (Chen and Goodman)</strong>
 
@@ -78,7 +78,7 @@ $$
 p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{max(c_{KN}(w_{i-n+1}^{i}) - D(w_{i-n+1}^{i-1}), 0)}{c_{KN}(w_{i-n+1}^{i-1})}+\lambda(w_{i-n+1}^{i-1})p_{KN}(w_i|w_{i-n+2}^{i-1})
 $$
 
-All count values are stored in seperate `data.table`'s, meaning that counts are pulled in real time rather than calculated - this results in a lengthy build process but results in fast response times for the user.
+All count values are stored in seperate `data.table`'s, resulting in values being pulled in real time. Discount values are pre-calculated for each n-gram table and cached. Pre-calculation of variables results in a lengthy build process but fast response times for the user.
 
 ---
 
@@ -90,6 +90,9 @@ $$
 
 Perplexity was used as the main metric for evaluation, it represents the average branching factor - the average number of words that can follow a given word. Perplexity is calculated on a held out test set. 
 
+Performance of Maximum Likelihood Estimation (MLE) without any smoothing, results in a very good perplexity (exc. OOV) score, however the number of Out of Vocabulary (OOV) words is extremely high indicating that smoothing is required. With the Modified Kneser Ney Interpolated model, the OOV percentage is reduced to that of the 1 gram model and the perplexity including OOV words is much smaller, indicating superior performance.
+
+
 
 |Model                       |Perplexity - Exc. OOV |OOV |Perplexity - Inc. OOV |
 |:---------------------------|:---------------------|:---|:---------------------|
@@ -98,4 +101,3 @@ Perplexity was used as the main metric for evaluation, it represents the average
 |MLE - 1gram                 |1228                  |1%  |1371                  |
 |Modified Kneser Ney - 4gram |%                     |%   |%                     |
 
- 

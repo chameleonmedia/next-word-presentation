@@ -92,16 +92,16 @@ $$
 
 Perplexity was used as the main metric for evaluation, it represents the average branching factor - the average number of words that can follow a given word. Perplexity is calculated on a held out test set. 
 
-Performance of Maximum Likelihood Estimation (MLE) without any smoothing, results in a very good perplexity (exc. OOV) score, however the number of Out of Vocabulary (OOV) words is extremely high indicating that smoothing is required. With the Modified Kneser Ney Interpolated model, the OOV percentage is reduced to that of the 1 gram model and the perplexity including OOV words is much smaller, indicating superior performance.
+Performance of Maximum Likelihood Estimation (MLE) without any smoothing results in a very good perplexity (exc. OOV) score, however the number of Out of Vocabulary (OOV) words is extremely high indicating that smoothing is required. With the Modified Kneser Ney Interpolated model, the OOV percentage is reduced to that of the 1-gram model and the perplexity including OOV words is much smaller, indicating superior performance.
 
 
 ```{r, echo=FALSE, cache=TRUE, warning=FALSE}
 
 calc.names <- c("MLE - 3gram", "MLE - 2gram", "MLE - 1gram","Modified Kneser Ney - 4gram") 
 
-perplexity.exc.calc <- c(39, 140,  1228, "%")
-oov.calc <- c("52%", "19%",  "1%", "%")
-perplexity.inc.calc <- c(24322, 1112,  1371, "%")
+perplexity.exc.calc <- c(39, 140,  1228, 347)
+oov.calc <- c("52%", "19%",  "1%", "1%")
+perplexity.inc.calc <- c(24322, 1112,  1371, 387)
 results <- data.frame(calc.names, perplexity.exc.calc, oov.calc, perplexity.inc.calc)
 names(results) <- c("Model", "Perplexity - Exc. OOV", "OOV", "Perplexity - Inc. OOV")
 rownames(results) <- NULL 

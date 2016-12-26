@@ -90,14 +90,14 @@ $$
 
 Perplexity was used as the main metric for evaluation, it represents the average branching factor - the average number of words that can follow a given word. Perplexity is calculated on a held out test set. 
 
-Performance of Maximum Likelihood Estimation (MLE) without any smoothing, results in a very good perplexity (exc. OOV) score, however the number of Out of Vocabulary (OOV) words is extremely high indicating that smoothing is required. With the Modified Kneser Ney Interpolated model, the OOV percentage is reduced to that of the 1 gram model and the perplexity including OOV words is much smaller, indicating superior performance.
+Performance of Maximum Likelihood Estimation (MLE) without any smoothing results in a very good perplexity (exc. OOV) score, however the number of Out of Vocabulary (OOV) words is extremely high indicating that smoothing is required. With the Modified Kneser Ney Interpolated model, the OOV percentage is reduced to that of the 1-gram model and the perplexity including OOV words is much smaller, indicating superior performance.
 
 
 
-|Model                       |Perplexity - Exc. OOV |OOV |Perplexity - Inc. OOV |
-|:---------------------------|:---------------------|:---|:---------------------|
-|MLE - 3gram                 |39                    |52% |24322                 |
-|MLE - 2gram                 |140                   |19% |1112                  |
-|MLE - 1gram                 |1228                  |1%  |1371                  |
-|Modified Kneser Ney - 4gram |%                     |%   |%                     |
+|Model                       | Perplexity - Exc. OOV|OOV | Perplexity - Inc. OOV|
+|:---------------------------|---------------------:|:---|---------------------:|
+|MLE - 3gram                 |                    39|52% |                 24322|
+|MLE - 2gram                 |                   140|19% |                  1112|
+|MLE - 1gram                 |                  1228|1%  |                  1371|
+|Modified Kneser Ney - 4gram |                   347|1%  |                   387|
 

@@ -160,39 +160,39 @@ p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{max(c_{KN}(w_{i-n+1}^{i}) - D(w_{i-n+1}^{i-1
 
 <p>Perplexity was used as the main metric for evaluation, it represents the average branching factor - the average number of words that can follow a given word. Perplexity is calculated on a held out test set. </p>
 
-<p>Performance of Maximum Likelihood Estimation (MLE) without any smoothing, results in a very good perplexity (exc. OOV) score, however the number of Out of Vocabulary (OOV) words is extremely high indicating that smoothing is required. With the Modified Kneser Ney Interpolated model, the OOV percentage is reduced to that of the 1 gram model and the perplexity including OOV words is much smaller, indicating superior performance.</p>
+<p>Performance of Maximum Likelihood Estimation (MLE) without any smoothing results in a very good perplexity (exc. OOV) score, however the number of Out of Vocabulary (OOV) words is extremely high indicating that smoothing is required. With the Modified Kneser Ney Interpolated model, the OOV percentage is reduced to that of the 1-gram model and the perplexity including OOV words is much smaller, indicating superior performance.</p>
 
 <table><thead>
 <tr>
 <th align="left">Model</th>
-<th align="left">Perplexity - Exc. OOV</th>
+<th align="right">Perplexity - Exc. OOV</th>
 <th align="left">OOV</th>
-<th align="left">Perplexity - Inc. OOV</th>
+<th align="right">Perplexity - Inc. OOV</th>
 </tr>
 </thead><tbody>
 <tr>
 <td align="left">MLE - 3gram</td>
-<td align="left">39</td>
+<td align="right">39</td>
 <td align="left">52%</td>
-<td align="left">24322</td>
+<td align="right">24322</td>
 </tr>
 <tr>
 <td align="left">MLE - 2gram</td>
-<td align="left">140</td>
+<td align="right">140</td>
 <td align="left">19%</td>
-<td align="left">1112</td>
+<td align="right">1112</td>
 </tr>
 <tr>
 <td align="left">MLE - 1gram</td>
-<td align="left">1228</td>
+<td align="right">1228</td>
 <td align="left">1%</td>
-<td align="left">1371</td>
+<td align="right">1371</td>
 </tr>
 <tr>
 <td align="left">Modified Kneser Ney - 4gram</td>
-<td align="left">%</td>
-<td align="left">%</td>
-<td align="left">%</td>
+<td align="right">347</td>
+<td align="left">1%</td>
+<td align="right">387</td>
 </tr>
 </tbody></table>
 

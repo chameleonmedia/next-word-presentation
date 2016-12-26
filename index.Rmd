@@ -29,7 +29,7 @@ Many of us use next word prediction each day - most commonly on our mobile phone
 
 <p>The application is hosted within the Shiny framework and can be found <a href="https://garethcork.shinyapps.io/prediction-app/">here</a>.</p>
 
-<p><strong>How does the app work?</strong> The user enters text into the input area, the most probably next words are then shown to the user in descending order.</p>
+<p><strong>How does the app work?</strong> The user enters text into the input area, the most probable next words are then shown to the user in descending order.</p>
 
 </div>
 
@@ -80,7 +80,7 @@ $$
 p_{KN}(w_i|w_{i-n+1}^{i-1}) = \frac{max(c_{KN}(w_{i-n+1}^{i}) - D(w_{i-n+1}^{i-1}), 0)}{c_{KN}(w_{i-n+1}^{i-1})}+\lambda(w_{i-n+1}^{i-1})p_{KN}(w_i|w_{i-n+2}^{i-1})
 $$
 
-All count values are stored in seperate `data.table`'s, resulting in values being pulled in real time. Discount values are pre-calculated for each n-gram table and cached. Pre-calculation of variables results in a lengthy build process but fast response times for the user.
+All count values are stored in separate `data.table`'s, resulting in values being pulled in real time. Discount values are pre-calculated for each n-gram table and cached. Pre-calculation of variables results in a lengthy build process but fast response times for the user.
 
 ---
 
